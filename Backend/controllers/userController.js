@@ -84,3 +84,14 @@ export const logout = (req, res) => {
     res.status(500).json(err);
   }
 };
+export const getOtherUser = async (req, res) => {
+  try {
+    const loggedInUserId = req.id;
+    const otherUsers = await User.find({ _id: { $ne: loggedInUserId } }).select(
+      "-password"
+    );
+    return res.status(200).json(otherUsers);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
