@@ -28,3 +28,18 @@ export const sendMessage = async (req, res) => {
     res.status(500).json(err);
   }
 };
+export const getMessage = async (req, res) => {
+  try {
+    const receiverId = req.params.id;
+    const senderId = req.id;
+    const conversation = await Conversations.findOne({
+      participants: { $all: [senderId, receiverId] },
+    }).populate("messages");
+    if (!conversation) {
+      return res.status(200).json({ messages: [] });
+    }
+    return res.status(200).json({ messages: conversation.messages });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
