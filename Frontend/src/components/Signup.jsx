@@ -1,23 +1,65 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Signup = () => {
   const [user, setUser] = useState({
-    fullName: "",
+    fullname: "",
     username: "",
     password: "",
     confirmPassword: "",
     gender: "",
   });
-
+  const navigate = useNavigate();
   const handleCheckBox = (gender) => {
     setUser({ ...user, gender });
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+    const { fullname, username, password, confirmPassword, gender } = user;
+
+    // Frontend validation
+    if (!fullname || !username || !password || !confirmPassword || !gender) {
+      alert("Please fill in all fields.");
+      return;
+    }
     // Handle form submission logic here
-    console.log(user);
+    try {
+      const res = await axios.post(
+        `http://localhost:8080/api/v1/user/register`,
+        user,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      if (res.status === 201) {
+        navigate("/login");
+        toast.success(res.data.msg);
+      }
+    } catch (err) {
+      toast.error(
+        err?.response?.data?.msg || "An error occurred. Please try again."
+      );
+      if (err.response) {
+        console.error("Status:", err.response.status);
+        console.error("Data:", err.response.data);
+        alert(`Error: ${JSON.stringify(err.response.data)}`);
+      } else {
+        console.error("Error:", err.message);
+      }
+    }
+    setUser({
+      fullname: "",
+      username: "",
+      password: "",
+      confirmPassword: "",
+      gender: "",
+    });
   };
 
   return (
@@ -35,8 +77,8 @@ const Signup = () => {
               <span className="text-gray-200 font-medium">Full Name</span>
             </label>
             <input
-              value={user.fullName}
-              onChange={(e) => setUser({ ...user, fullName: e.target.value })}
+              value={user.fullname}
+              onChange={(e) => setUser({ ...user, fullname: e.target.value })}
               type="text"
               placeholder="Enter your full name"
               className="input input-bordered w-full bg-black/30 text-white placeholder-gray-400 border-white/30 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -101,7 +143,6 @@ const Signup = () => {
                   name="gender"
                   value="male"
                   className="radio radio-sm mr-2"
-                  defaultChecked
                 />
                 Male
               </label>
