@@ -17,8 +17,8 @@ export const register = async (req, res) => {
       return res.status(400).json({ msg: "Username already exists." });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const maleProfilePhoto = `https://avatar.iran.liara.run/public/boy/username=${username}`;
-    const femaleProfilePhoto = `https://avatar.iran.liara.run/public/girl/username=${username}`;
+    const maleProfilePhoto = `https://avatar.iran.liara.run/public/boy?username=${username}`;
+    const femaleProfilePhoto = `https://avatar.iran.liara.run/public/girl?username=${username}`;
     await User.create({
       fullname,
       username,
@@ -62,7 +62,8 @@ export const login = async (req, res) => {
       .cookie("token", token, {
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: "lax",
+        secure: false,
       })
       .json({
         _id: user._id,
