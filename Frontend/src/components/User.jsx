@@ -1,10 +1,22 @@
 import React from "react";
 import Avatar from "boring-avatars";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedUser } from "../redux/userSlics";
 
 const User = ({ user }) => {
+  const dispatch = useDispatch();
+  const { selectedUser } = useSelector((state) => state.user);
+  const selectedUserHandler = (user) => {
+    dispatch(setSelectedUser(user));
+  };
   return (
     <div className="p-4">
-      <div className="flex items-center gap-4 p-2 rounded-lg hover:bg-gray-100 hover:text-gray-900 cursor-pointer transition-colors duration-200">
+      <div
+        onClick={() => selectedUserHandler(user)}
+        className={`${
+          selectedUser?._id === user._id ? "bg-gray-100 text-gray-900" : ""
+        } flex items-center gap-4 p-2 rounded-lg hover:bg-gray-100 hover:text-gray-900 cursor-pointer transition-colors duration-200`}
+      >
         <div className="relative w-12 h-12 flex-shrink-0">
           <div className="w-full h-full rounded-full overflow-hidden">
             {user.profilePhoto ? (

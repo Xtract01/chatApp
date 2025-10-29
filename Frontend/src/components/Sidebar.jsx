@@ -1,7 +1,21 @@
 import React from "react";
 import { ImSearch } from "react-icons/im";
 import OtherUser from "./OtherUser";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const logoutHandler = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8080/api/v1/user/logout`);
+      navigate("/login");
+      toast.success(res.data.msg);
+    } catch (err) {
+      toast.error("Logout failed");
+      console.error("Logout Error:", err);
+    }
+  };
   return (
     <div className="w-72 h-full bg-white/10 backdrop-blur-lg border-r border-white/20 p-4 flex flex-col shadow-lg">
       {/* Search Bar */}
@@ -21,7 +35,10 @@ const Sidebar = () => {
       <div className="divider"></div>
       <OtherUser />
       <div className="mt-auto">
-        <button className="flex items-center justify-center w-full py-1.5 px-3 rounded-md bg-white/20 hover:bg-white/30 text-white text-sm font-medium transition-colors duration-200">
+        <button
+          onClick={logoutHandler}
+          className="flex items-center justify-center w-full py-1.5 px-3 rounded-md bg-white/20 hover:bg-white/30 text-white text-sm font-medium transition-colors duration-200"
+        >
           Logout
         </button>
       </div>
