@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 const Messages = () => {
   useGetMessages();
   const { messages } = useSelector((state) => state.message);
-  if (!messages) return;
+
   return (
     <div>
       {messages?.map((message) => (

@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Avatar from "boring-avatars";
 import SendInput from "./SendInput";
 import Messages from "./Messages";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedUser } from "../redux/userSlics";
 
 const MessageContainer = () => {
   const { selectedUser } = useSelector((state) => state.user);
   const user = { name: selectedUser?.fullname, isOnline: true };
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    return () => dispatch(setSelectedUser(null));
+  }, []);
+  if (!selectedUser)
+    return (
+      <div className="flex-1 flex items-center justify-center">
+        <h1 className="text-white text-xl font-semibold text-center">
+          Let's start a conversation
+        </h1>
+      </div>
+    );
   return (
     <div className="md:min-w-[300px] flex-1 flex flex-col border-l border-white/30">
       {/* Header */}

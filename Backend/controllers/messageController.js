@@ -22,7 +22,7 @@ export const sendMessage = async (req, res) => {
       gotConversation.messages.push(newMessage._id);
     }
     await gotConversation.save();
-    return res.status(200).json({ msg: "Message sent successfully" });
+    return res.status(200).json({ message: newMessage });
     //Socket.io integration will be here
   } catch (err) {
     res.status(500).json(err);

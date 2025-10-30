@@ -1,15 +1,35 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 
 const SingleMessage = ({ message }) => {
+  const scroll = useRef();
+  const { authUser } = useSelector((state) => state.user);
+  const { selectedUser } = useSelector((state) => state.user);
+  useEffect(() => {
+    scroll.current?.scrollIntoView({ behavior: "smooth" });
+  }, [message]);
+  console.log("authUser:", authUser);
+  console.log("message:", message);
   return (
-    <div className="flex flex-col px-4 py-2 overflow-y-auto h-full">
+    <div
+      ref={scroll}
+      className="flex flex-col px-4 py-2 overflow-y-auto h-full"
+    >
       {/* Message from Obi-Wan */}
-      <div className="chat chat-start !m-0">
+      <div
+        className={`chat ${
+          authUser?._id === message?.senderId ? "chat-end" : "chat-start"
+        } !m-0`}
+      >
         <div className="chat-image avatar">
           <div className="w-9 rounded-full">
             <img
               alt="Obi-Wan Kenobi"
-              src="https://img.daisyui.com/images/profile/demo/kenobee@192.webp"
+              src={
+                message?.senderId === authUser?._id
+                  ? authUser?.profilePhoto
+                  : selectedUser?.profilePhoto
+              }
             />
           </div>
         </div>

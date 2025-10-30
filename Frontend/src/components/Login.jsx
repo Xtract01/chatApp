@@ -36,7 +36,7 @@ const Login = () => {
       if (err.response) {
         console.error("Status:", err.response.status);
         console.error("Data:", err.response.data);
-        alert(`Error: ${JSON.stringify(err.response.data)}`);
+        toast.error(err.response.data.msg);
       } else {
         toast.error(
           err?.response?.data?.msg || "An error occurred. Please try again."
