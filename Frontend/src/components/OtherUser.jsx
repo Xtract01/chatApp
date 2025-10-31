@@ -1,19 +1,24 @@
 import React from "react";
-import Avatar from "boring-avatars";
 import User from "./User";
 import useGetOtherUsers from "../hooks/useGetOtherUsers";
 import { useSelector } from "react-redux";
-const UsersList = () => {
+
+const UsersList = ({ filteredUsers = [] }) => {
   useGetOtherUsers();
   const { otherUsers } = useSelector((state) => state.user);
-  if (!otherUsers || otherUsers.length === 0) {
-    return;
+
+  const usersToDisplay =
+    filteredUsers && filteredUsers.length > 0 ? filteredUsers : otherUsers;
+
+  if (!usersToDisplay || usersToDisplay.length === 0) {
+    return <p className="text-gray-400 text-center mt-4">No users found</p>;
   }
+
   return (
     <div className="overflow-auto">
-      {otherUsers.map((user) => {
-        return <User key={user._id} user={user} />;
-      })}
+      {usersToDisplay.map((user) => (
+        <User key={user._id} user={user} />
+      ))}
     </div>
   );
 };
