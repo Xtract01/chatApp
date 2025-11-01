@@ -5,10 +5,16 @@ import { setSelectedUser } from "../redux/userSlics";
 
 const User = ({ user }) => {
   const dispatch = useDispatch();
-  const { selectedUser } = useSelector((state) => state.user);
+  const { selectedUser, onlineUsers } = useSelector((state) => state.user);
+
+  // ✅ Fix: Handle null/undefined onlineUsers
+  const isOnline =
+    onlineUsers && Array.isArray(onlineUsers) && onlineUsers.includes(user._id);
+
   const selectedUserHandler = (user) => {
     dispatch(setSelectedUser(user));
   };
+
   return (
     <div className="p-4">
       <div
@@ -35,7 +41,9 @@ const User = ({ user }) => {
             )}
           </div>
 
-          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-md"></div>
+          {isOnline && (
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-md"></div>
+          )}
         </div>
         <div>
           <p className="font-semibold">{user.fullname}</p>

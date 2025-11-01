@@ -5,11 +5,13 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import { useDispatch } from "react-redux";
+import { setAuthUser } from "../redux/userSlics";
 const Sidebar = () => {
   const [search, setSearch] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
   const { otherUsers } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const logoutHandler = async () => {
@@ -17,6 +19,7 @@ const Sidebar = () => {
       const res = await axios.get(`http://localhost:8080/api/v1/user/logout`);
       navigate("/login");
       toast.success(res.data.msg);
+      dispatch(setAuthUser(null));
     } catch (err) {
       toast.error("Logout failed");
       console.error("Logout Error:", err);
