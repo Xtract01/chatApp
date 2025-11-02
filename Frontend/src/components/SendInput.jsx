@@ -3,7 +3,7 @@ import { useState } from "react";
 import { IoMdSend } from "react-icons/io";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setMessages } from "../redux/messageSlice.JSX";
+import { setMessages } from "../redux/messageSlice.jsx";
 const SendInput = () => {
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
