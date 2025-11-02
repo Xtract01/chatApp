@@ -48,8 +48,7 @@ const Signup = () => {
       if (err.response) {
         console.error("Status:", err.response.status);
         console.error("Data:", err.response.data);
-        alert(`Error: ${JSON.stringify(err.response.data)}`);
-      } else {
+
         console.error("Error:", err.message);
       }
     }
