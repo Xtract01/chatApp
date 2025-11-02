@@ -1,17 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Avatar from "boring-avatars";
 import SendInput from "./SendInput";
 import Messages from "./Messages";
-import { useDispatch, useSelector } from "react-redux";
-import { setSelectedUser } from "../redux/userSlics";
+import { useSelector } from "react-redux";
 
 const MessageContainer = () => {
-  const { selectedUser } = useSelector((state) => state.user);
-  const user = { name: selectedUser?.fullname, isOnline: true };
-  const dispatch = useDispatch();
-  useEffect(() => {
-    return () => dispatch(setSelectedUser(null));
-  }, []);
+  const { selectedUser, onlineUsers } = useSelector((state) => state.user);
+  const user = {
+    name: selectedUser?.fullname,
+    isOnline: onlineUsers.includes(selectedUser?._id),
+  };
+
   if (!selectedUser)
     return (
       <div className="flex-1 flex items-center justify-center">

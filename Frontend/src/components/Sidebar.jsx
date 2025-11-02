@@ -16,18 +16,24 @@ const Sidebar = () => {
 
   const logoutHandler = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/v1/user/logout`);
-      navigate("/login");
+      const res = await axios.get(`http://localhost:8080/api/v1/user/logout`, {
+        withCredentials: true,
+      });
+
       toast.success(res.data.msg);
-      dispatch(setAuthUser(null));
+
+      setTimeout(() => {
+        dispatch(setAuthUser(null));
+        navigate("/login");
+      }, 500);
     } catch (err) {
       toast.error("Logout failed");
       console.error("Logout Error:", err);
     }
   };
+
   const searchSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(otherUsers);
 
     const conversationUser = otherUsers?.find((user) =>
       user.fullname.toLowerCase().includes(search.toLowerCase())

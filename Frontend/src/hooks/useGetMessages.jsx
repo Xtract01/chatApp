@@ -16,7 +16,6 @@ const useGetMessages = () => {
           `http://localhost:8080/api/v1/message/${selectedUser._id}`,
           { withCredentials: true }
         );
-        console.log("Fetched messages:", res.data);
         dispatch(setMessages(res.data.messages));
       } catch (error) {
         console.error("Error fetching messages:", error);
