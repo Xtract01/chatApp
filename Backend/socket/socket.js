@@ -10,7 +10,8 @@ export const getReceiverSocketId = (receiverId) => {
 export const initializeSocket = (server) => {
   io = new Server(server, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: ["http://localhost:5173", "https://chatapp-ab62.onrender.com"],
+      methods: ["GET", "POST"],
       credentials: true,
     },
   });
@@ -20,12 +21,17 @@ export const initializeSocket = (server) => {
 
     if (userId) {
       userSocketMap[userId] = socket.id;
+      console.log(`✅ User connected: ${userId}, Socket: ${socket.id}`);
     }
 
+    // Emit online users to all connected clients
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
     socket.on("disconnect", () => {
-      delete userSocketMap[userId];
+      if (userId) {
+        delete userSocketMap[userId];
+        console.log(`❌ User disconnected: ${userId}`);
+      }
       io.emit("getOnlineUsers", Object.keys(userSocketMap));
     });
   });

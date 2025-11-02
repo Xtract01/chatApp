@@ -19,7 +19,7 @@ const userSlice = createSlice({
       state.selectedUser = action.payload;
     },
     setOnlineUsers: (state, action) => {
-      state.onlineUsers = action.payload;
+      state.onlineUsers = Array.isArray(action.payload) ? action.payload : [];
     },
   },
 });

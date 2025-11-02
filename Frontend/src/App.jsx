@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setSocket } from "./redux/socketSlice";
 import io from "socket.io-client";
 import { setOnlineUsers } from "./redux/userSlics";
+
 const ProtectedRoute = ({ children }) => {
   const { authUser } = useSelector((state) => state.user);
 
@@ -17,6 +18,7 @@ const ProtectedRoute = ({ children }) => {
 
   return children;
 };
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -34,15 +36,30 @@ const App = () => {
   const { authUser } = useSelector((state) => state.user);
   const { socket } = useSelector((state) => state.socket);
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (authUser) {
-      const socket = io("http://localhost:8080", {
+      // ✅ Use production URL (it will work for both local and production)
+      const socket = io("https://chatapp-ab62.onrender.com", {
         query: { userId: authUser._id },
+        withCredentials: true,
       });
+
+      socket.on("connect", () => {
+        console.log("✅ Socket connected:", socket.id);
+      });
+
+      socket.on("connect_error", (error) => {
+        console.error("❌ Socket error:", error.message);
+      });
+
       dispatch(setSocket(socket));
+
       socket.on("getOnlineUsers", (onlineUsers) => {
+        console.log("👥 Online users:", onlineUsers);
         dispatch(setOnlineUsers(onlineUsers));
       });
+
       return () => {
         socket.close();
       };
@@ -50,6 +67,7 @@ const App = () => {
       if (socket) {
         socket.close();
         dispatch(setSocket(null));
+        dispatch(setOnlineUsers([]));
       }
     }
   }, [authUser]);
