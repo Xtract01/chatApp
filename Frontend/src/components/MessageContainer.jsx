@@ -6,9 +6,12 @@ import { useSelector } from "react-redux";
 
 const MessageContainer = () => {
   const { selectedUser, onlineUsers } = useSelector((state) => state.user);
+
+  // ✅ Fix: Safely check online status
   const user = {
     name: selectedUser?.fullname,
-    isOnline: onlineUsers.includes(selectedUser?._id),
+    isOnline:
+      Array.isArray(onlineUsers) && onlineUsers.includes(selectedUser?._id),
   };
 
   if (!selectedUser)
@@ -19,6 +22,7 @@ const MessageContainer = () => {
         </h1>
       </div>
     );
+
   return (
     <div className="md:min-w-[300px] flex-1 flex flex-col border-l border-white/30">
       {/* Header */}
