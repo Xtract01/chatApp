@@ -16,9 +16,12 @@ const Sidebar = () => {
 
   const logoutHandler = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/v1/user/logout`, {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `https://chatapp-ab62.onrender.com/api/v1/user/logout`,
+        {
+          withCredentials: true,
+        }
+      );
 
       toast.success(res.data.msg);
 

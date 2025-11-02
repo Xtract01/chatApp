@@ -28,7 +28,7 @@ const Signup = () => {
     // Handle form submission logic here
     try {
       const res = await axios.post(
-        `http://localhost:8080/api/v1/user/register`,
+        `https://chatapp-ab62.onrender.com/api/v1/user/register`,
         user,
         {
           headers: {

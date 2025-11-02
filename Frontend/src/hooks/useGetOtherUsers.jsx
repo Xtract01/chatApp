@@ -7,9 +7,12 @@ const useGetOtherUsers = () => {
   useEffect(() => {
     const fetchOtherUsers = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/v1/user/`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `https://chatapp-ab62.onrender.com/api/v1/user/`,
+          {
+            withCredentials: true,
+          }
+        );
         dispatch(setOtherUsers(res.data));
       } catch (error) {
         console.error("Error fetching other users:", error);

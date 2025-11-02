@@ -13,7 +13,7 @@ const useGetMessages = () => {
 
       try {
         const res = await axios.get(
-          `http://localhost:8080/api/v1/message/${selectedUser._id}`,
+          `https://chatapp-ab62.onrender.com/api/v1/message/${selectedUser._id}`,
           { withCredentials: true }
         );
         dispatch(setMessages(res.data.messages));
