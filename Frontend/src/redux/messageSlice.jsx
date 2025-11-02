@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 const messageSlice = createSlice({
   name: "message",
   initialState: {
@@ -6,7 +7,11 @@ const messageSlice = createSlice({
   },
   reducers: {
     setMessages: (state, action) => {
-      state.messages = action.payload;
+      if (typeof action.payload === "function") {
+        state.messages = action.payload(state.messages);
+      } else {
+        state.messages = action.payload;
+      }
     },
   },
 });
